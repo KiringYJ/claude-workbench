@@ -2,11 +2,11 @@
 """Sync claude-workbench rules and plugin settings to a consumer project.
 
 Usage:
-    python scripts/sync_workbench.py rust --source /path/to/claude-workbench
-    python scripts/sync_workbench.py rust --source /path/to/claude-workbench --target /path/to/project
-    python scripts/sync_workbench.py rust --source /path/to/claude-workbench --rules-only
-    python scripts/sync_workbench.py rust --source /path/to/claude-workbench --settings-only
-    python scripts/sync_workbench.py rust --source /path/to/claude-workbench --check
+    python scripts/sync_workbench.py rust --source /path/to/workbench
+    python scripts/sync_workbench.py rust --source . --target /other/project
+    python scripts/sync_workbench.py rust --source . --rules-only
+    python scripts/sync_workbench.py rust --source . --settings-only
+    python scripts/sync_workbench.py rust --source . --check
 """
 
 from __future__ import annotations
@@ -115,7 +115,8 @@ def check_rules(source: Path, profile: dict, target: Path) -> list[str]:
 
         if not destination_file.exists():
             outdated.append(rule_name)
-        elif destination_file.read_text(encoding="utf-8") != expected:
+            continue
+        if destination_file.read_text(encoding="utf-8") != expected:
             outdated.append(rule_name)
 
     return outdated
@@ -182,7 +183,9 @@ def main() -> None:
     args = parser.parse_args()
 
     logging.basicConfig(
-        level=logging.INFO, format="%(message)s", stream=sys.stderr,
+        level=logging.INFO,
+        format="%(message)s",
+        stream=sys.stderr,
     )
 
     config = load_workbench_config(args.source)
@@ -192,7 +195,9 @@ def main() -> None:
     if profile_name not in config["profiles"]:
         available = ", ".join(config["profiles"])
         logger.error(
-            "Unknown profile: %s (available: %s)", profile_name, available,
+            "Unknown profile: %s (available: %s)",
+            profile_name,
+            available,
         )
         sys.exit(1)
 

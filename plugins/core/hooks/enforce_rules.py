@@ -21,7 +21,7 @@ EVENT_FIELD = {"bash": "command", "file": "new_string", "prompt": "user_prompt"}
 def parse_rule(filepath):
     """Parse a hookify.*.md file into a rule dict, or None if invalid/disabled."""
     try:
-        with open(filepath, "r", encoding="utf-8") as f:
+        with open(filepath, encoding="utf-8") as f:
             content = f.read()
     except (OSError, UnicodeDecodeError):
         return None

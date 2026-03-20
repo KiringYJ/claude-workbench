@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Tests for enforce_rules.py hookify rule enforcer."""
 
-import json
 import os
 import tempfile
 import textwrap
@@ -22,7 +21,8 @@ class TestParseRule(unittest.TestCase):
         return path
 
     def test_valid_block_rule(self):
-        path = self._write_rule(textwrap.dedent("""\
+        path = self._write_rule(
+            textwrap.dedent("""\
             ---
             name: test-block
             enabled: true
@@ -32,7 +32,8 @@ class TestParseRule(unittest.TestCase):
             ---
 
             Do not use rm -rf.
-        """))
+        """)
+        )
         rule = parse_rule(path)
         self.assertIsNotNone(rule)
         self.assertEqual(rule["name"], "test-block")
@@ -42,7 +43,8 @@ class TestParseRule(unittest.TestCase):
         self.assertEqual(rule["message"], "Do not use rm -rf.")
 
     def test_valid_warn_rule(self):
-        path = self._write_rule(textwrap.dedent("""\
+        path = self._write_rule(
+            textwrap.dedent("""\
             ---
             name: test-warn
             enabled: true
@@ -52,13 +54,15 @@ class TestParseRule(unittest.TestCase):
             ---
 
             TODO found in file.
-        """))
+        """)
+        )
         rule = parse_rule(path)
         self.assertIsNotNone(rule)
         self.assertEqual(rule["action"], "warn")
 
     def test_disabled_rule_returns_none(self):
-        path = self._write_rule(textwrap.dedent("""\
+        path = self._write_rule(
+            textwrap.dedent("""\
             ---
             name: disabled-rule
             enabled: false
@@ -68,7 +72,8 @@ class TestParseRule(unittest.TestCase):
             ---
 
             Should not fire.
-        """))
+        """)
+        )
         self.assertIsNone(parse_rule(path))
 
     def test_missing_frontmatter_returns_none(self):
@@ -80,7 +85,8 @@ class TestParseRule(unittest.TestCase):
         self.assertIsNone(parse_rule(path))
 
     def test_defaults_action_to_warn(self):
-        path = self._write_rule(textwrap.dedent("""\
+        path = self._write_rule(
+            textwrap.dedent("""\
             ---
             name: no-action
             enabled: true
@@ -89,13 +95,15 @@ class TestParseRule(unittest.TestCase):
             ---
 
             Default action.
-        """))
+        """)
+        )
         rule = parse_rule(path)
         self.assertIsNotNone(rule)
         self.assertEqual(rule["action"], "warn")
 
     def test_defaults_event_to_all(self):
-        path = self._write_rule(textwrap.dedent("""\
+        path = self._write_rule(
+            textwrap.dedent("""\
             ---
             name: no-event
             enabled: true
@@ -103,7 +111,8 @@ class TestParseRule(unittest.TestCase):
             ---
 
             Body.
-        """))
+        """)
+        )
         rule = parse_rule(path)
         self.assertIsNotNone(rule)
         self.assertEqual(rule["event"], "all")
@@ -112,7 +121,8 @@ class TestParseRule(unittest.TestCase):
         self.assertIsNone(parse_rule("/nonexistent/path/hookify.fake.md"))
 
     def test_frontmatter_with_comments(self):
-        path = self._write_rule(textwrap.dedent("""\
+        path = self._write_rule(
+            textwrap.dedent("""\
             ---
             # This is a comment
             name: commented
@@ -123,13 +133,15 @@ class TestParseRule(unittest.TestCase):
             ---
 
             Comment test.
-        """))
+        """)
+        )
         rule = parse_rule(path)
         self.assertIsNotNone(rule)
         self.assertEqual(rule["name"], "commented")
 
     def test_quoted_values_stripped(self):
-        path = self._write_rule(textwrap.dedent("""\
+        path = self._write_rule(
+            textwrap.dedent("""\
             ---
             name: "quoted-name"
             enabled: 'true'
@@ -139,7 +151,8 @@ class TestParseRule(unittest.TestCase):
             ---
 
             Quoted.
-        """))
+        """)
+        )
         rule = parse_rule(path)
         self.assertIsNotNone(rule)
         self.assertEqual(rule["name"], "quoted-name")

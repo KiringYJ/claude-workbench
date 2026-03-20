@@ -1,25 +1,25 @@
 #!/usr/bin/env python3
 """Tests for document_sync.py pre-commit doc review hook."""
 
+import contextlib
 import json
 import unittest
-
-from document_sync import main
-
 from io import StringIO
 from unittest.mock import patch
+
+from document_sync import main
 
 
 def _run_hook(input_data):
     """Run the hook main() with simulated stdin and capture stdout."""
     stdin_text = json.dumps(input_data)
-    with patch("sys.stdin", StringIO(stdin_text)), \
-         patch("sys.stdout", new_callable=StringIO) as mock_stdout, \
-         patch("sys.exit", side_effect=SystemExit):
-        try:
+    with (
+        patch("sys.stdin", StringIO(stdin_text)),
+        patch("sys.stdout", new_callable=StringIO) as mock_stdout,
+        patch("sys.exit", side_effect=SystemExit),
+    ):
+        with contextlib.suppress(SystemExit):
             main()
-        except SystemExit:
-            pass
         return mock_stdout.getvalue()
 
 
@@ -74,13 +74,13 @@ class TestDocumentSync(unittest.TestCase):
 
     def test_malformed_json_handled(self):
         """Malformed input should produce empty JSON, not crash."""
-        with patch("sys.stdin", StringIO("not json")), \
-             patch("sys.stdout", new_callable=StringIO) as mock_stdout, \
-             patch("sys.exit", side_effect=SystemExit):
-            try:
+        with (
+            patch("sys.stdin", StringIO("not json")),
+            patch("sys.stdout", new_callable=StringIO) as mock_stdout,
+            patch("sys.exit", side_effect=SystemExit),
+        ):
+            with contextlib.suppress(SystemExit):
                 main()
-            except SystemExit:
-                pass
             self.assertEqual(mock_stdout.getvalue().strip(), "{}")
 
 
