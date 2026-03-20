@@ -13,10 +13,9 @@ tests/test_normalize.py         # not test-normalize.py
 
 Refactor step: iterate with `uv run ruff check . --fix` + `uv run ruff format .` + `uv run ty` while staying green.
 
-**Pre-commit checklist (mandatory)**
-- Before every commit, run `uv run ruff check . --fix` and `uv run ruff format .` and `uv run ty`.
-- Fix **all** warnings and formatting issues, even if they were not caused by your change.
-- Do not commit until all commands pass cleanly with zero errors.
+**Pre-commit enforcement**
+- Run `uv run ruff check . --fix` and `uv run ruff format .` and `uv run ty` before committing.
+- The PreToolUse guard hook (`guard-python-commit.sh`) automatically blocks `git commit`, `git push`, and `gh pr create` if ruff/ty checks fail.
 
 **External package adoption**
 - Version pinned in `pyproject.toml` (not just manifest — explicit version constraint).

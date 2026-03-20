@@ -1,7 +1,7 @@
 {
   "name": "python",
   "version": "1.0.0",
-  "description": "Python development rules, uv/ruff/ty workflow, logging conventions, and commit/optimize/pre-push skills",
+  "description": "Python development rules, uv/ruff/ty workflow, logging conventions, pre-commit guard hook, and optimize skill",
   "keywords": ["python", "ruff", "uv", "pytest", "ty", "lsp"],
   "lspServers": {
     "ty": {

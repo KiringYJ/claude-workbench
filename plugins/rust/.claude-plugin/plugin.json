@@ -1,6 +1,6 @@
 {
   "name": "rust",
   "version": "1.0.0",
-  "description": "Rust development rules, naming conventions, TDD workflow, and pre-commit guards",
+  "description": "Rust development rules, naming conventions, TDD workflow, pre-commit guard hook, and optimize skill",
   "keywords": ["rust", "cargo", "fmt", "clippy"]
 }

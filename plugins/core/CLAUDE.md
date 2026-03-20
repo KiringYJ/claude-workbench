@@ -71,6 +71,10 @@ Store all behavioral rules, directives, and conventions in project-level `CLAUDE
 
 When a task matches an available skill (e.g. `commit-commands:commit` for committing, `core:review` for code review), **always invoke the Skill tool** instead of manually running commands. Skills encode project-specific workflows — bypassing them loses that value.
 
+### Hookify-First Rule (mandatory)
+
+Prefer **hookify rules** (`hookify.<name>.md`) for simple pattern-match enforcement (block/warn). Use **raw hook scripts** (`hooks/`) only when conditional logic is required (e.g., running lint/format checks and blocking on failure). Reserve **skills** for genuine interactive workflows (e.g. `optimize`), never for enforcement gates.
+
 ### Do
 - Utilize subagents (Agent tool) as early as possible — parallelize independent research, exploration, and validation tasks to maximize throughput.
 - Propose at least one *simpler* alternative if the plan seems complex.
