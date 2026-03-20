@@ -107,6 +107,45 @@ These *hold multiple items* of the same kind.
 
 **Quick test:** "Is this a module/concept?" → singular. "Does this hold N files of the same type?" → plural.
 
+## Output & Logging Policy
+
+All output flows through well-defined channels. Keep stdout clean for machine consumption and stderr informative for humans.
+
+### Channels
+
+| Channel | Purpose | Examples |
+|---------|---------|---------|
+| **stdout** | Command results, primary data output | Result tables, JSON output, generated data |
+| **stderr** | Diagnostics: status, progress, warnings, errors | Via the language's logging framework |
+
+### Rules
+
+1. **Use the language's logging framework — never raw print for diagnostics.**
+   Every language has a structured logging facility. Use it.
+
+   | Language | Framework | Raw print (avoid for diagnostics) |
+   |----------|-----------|-----------------------------------|
+   | Rust | `log` crate (`info!`, `warn!`, `error!`) | `println!`, `eprintln!` |
+   | Python | `logging` module (`logger.info()`, etc.) | `print()` |
+   | TypeScript | structured logger (e.g. `pino`, `winston`) | `console.log` |
+   | Go | `log/slog` or `log` package | `fmt.Println` |
+
+2. **Reserve print/println for command output only** — the data that IS the command's result. Library and business-logic code must never use raw print.
+
+3. **Respect log levels consistently:**
+
+   | Level | When | Visible by default? |
+   |-------|------|---------------------|
+   | error | Operation failed, cannot recover | Yes |
+   | warn | Degraded results, skipped items, fallback used | Yes |
+   | info | Major operation status (start/finish, counts) | Yes |
+   | debug | Detailed calculation state, intermediate values | No |
+   | trace | Fine-grained flow (cache hits, per-record) | No |
+
+4. **Create scoped loggers** — per-module or per-component, not a single global logger.
+
+5. **Concise structured messages** — consolidate related values into one log call, not one call per field.
+
 ## Feature & Change Workflow
 
 1. Write/extend tests first (happy path, edge case, failure mode).
@@ -115,8 +154,10 @@ These *hold multiple items* of the same kind.
 4. **Verify GREEN** — all tests pass, output clean.
 5. Refactor while staying green.
 6. Review diff size and justification.
-7. Verify docs are still accurate — if CLI flags, config formats, or parameters changed, update the relevant documentation.
+7. **Doc verification** — if CLI flags, config formats, commands, or parameters changed, update the relevant documentation (README, command docs, configuration docs, API docs). Stale docs are as bad as stale tests.
 8. Non-compliance (skipped tests, stale docs) => rejection.
+
+**Auto-commit for small features** — after all checks pass (formatting, linting, tests), commit automatically using the `/commit-commands:commit` skill. Do not wait for the user to manually prompt "commit".
 
 **Bug fixes** — always write a failing test that reproduces the bug *before* fixing it. The test proves the fix and prevents regression.
 
