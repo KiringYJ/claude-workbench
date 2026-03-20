@@ -6,9 +6,9 @@ Centralized Claude Code plugin marketplace for cross-project reuse.
 
 | Plugin | Description |
 |--------|-------------|
-| **core** | Language-agnostic engineering rules, review philosophy, safety guards, code review skill |
-| **rust** | Rust naming conventions, cargo TDD workflow, pre-commit guard (fmt/clippy/check) |
-| **python** | uv/ruff/ty workflow, logging conventions, ty LSP, commit/optimize/pre-push skills |
+| **core** | Language-agnostic engineering rules, review philosophy, safety guards, and doc review hook |
+| **rust** | Rust naming conventions, cargo TDD workflow, pre-commit guard (fmt/clippy/check), optimize skill |
+| **python** | uv/ruff/ty workflow, logging conventions, ty LSP server, pre-commit guard (ruff/ty), optimize skill |
 
 ## Usage
 
@@ -37,21 +37,46 @@ Enable only the plugins you need. `core` is recommended for all projects.
 
 ```
 .claude-plugin/
-  marketplace.json          # marketplace manifest
+  marketplace.json
 plugins/
   core/
-    CLAUDE.md               # review philosophy, interaction rules, naming, TDD workflow
-    skills/review/          # /review — Linus Mode code review
-    hookify.block-*         # safety guards (git add, --no-verify, compound cd)
-    hookify.ultrathink-*    # extended reasoning mode
-  rust/
-    CLAUDE.md               # Rust-specific naming, cargo workflow
-    hooks/                  # pre-commit guard (cargo fmt/clippy/check)
+    .claude-plugin/
+      plugin.json
+    hooks/
+      doc_sync.py
+      enforce_rules.py
+      hooks.json
+    skills/
+      review/
+        SKILL.md
+      update-doc/
+        SKILL.md
+    .mcp.json
+    CLAUDE.md
+    hookify.block-bad-git-add.md
+    hookify.block-compound-cd.md
+    hookify.block-no-verify.md
+    hookify.ultrathink-mode.md
   python/
-    CLAUDE.md               # Python-specific naming, ruff/ty workflow, logging
-    skills/commit/          # /commit — lint, format, type-check, test, commit
-    skills/optimize/        # /optimize — cProfile-based profiling workflow
-    skills/pre-push/        # /pre-push — ruff + ty + pytest
+    .claude-plugin/
+      plugin.json
+    hooks/
+      guard-python-commit.sh
+      hooks.json
+    skills/
+      optimize/
+        SKILL.md
+    CLAUDE.md
+  rust/
+    .claude-plugin/
+      plugin.json
+    hooks/
+      guard-rust-commit.sh
+      hooks.json
+    skills/
+      optimize/
+        SKILL.md
+    CLAUDE.md
 ```
 
 ## License
