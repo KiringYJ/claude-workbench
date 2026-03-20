@@ -15,12 +15,12 @@ Idempotent — safe to run repeatedly. Only overwrites managed files.
 1. If a profile argument was provided, use it.
 2. Else ask the user to choose: `base`, `rust`, `python`, or `full`.
 
-| Profile  | Rules              | Plugins                                    |
-|----------|--------------------|--------------------------------------------|
-| base     | core               | core@workbench                             |
-| rust     | core, rust         | core@workbench, rust@workbench             |
-| python   | core, python       | core@workbench, python@workbench           |
-| full     | core, rust, python | core@workbench, rust@workbench, python@workbench |
+| Profile  | Rules              | Workbench Plugins              | Third-Party Plugins                          |
+|----------|--------------------|--------------------------------|----------------------------------------------|
+| base     | core               | core@workbench                 | omc, ralph-loop, hookify, claude-md-management, skill-creator, claude-code-setup, commit-commands |
+| rust     | core, rust         | core@workbench, rust@workbench | (same as base)                               |
+| python   | core, python       | core@workbench, python@workbench | (same as base)                             |
+| full     | core, rust, python | core@workbench, rust@workbench, python@workbench | (same as base)              |
 
 ## Step 2: Fetch Profile Config
 
