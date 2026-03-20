@@ -6,10 +6,10 @@ Centralized Claude Code plugin marketplace and shared rules for cross-project re
 
 This repo serves two purposes:
 
-1. **Shared rules** (`rules/`) — persistent context loaded via `@import` in consumer projects
+1. **Shared rules** (`rules/`) — synced to consumer projects as `.claude/rules/*.md`
 2. **Plugins** (`plugins/`) — functional extensions (skills, hooks, hookify rules, MCP servers)
 
-Rules are **not** inside plugins. Plugins provide functionality (hooks enforce checks, skills encode workflows); rules provide persistent context (conventions, philosophy, naming). Consumer projects import both independently.
+Rules are **not** inside plugins. Plugins provide functionality (hooks enforce checks, skills encode workflows); rules provide persistent context (conventions, philosophy, naming). Consumer projects sync both via a single skill.
 
 ## Rules
 
@@ -29,56 +29,57 @@ Rules are **not** inside plugins. Plugins provide functionality (hooks enforce c
 
 ## Usage
 
-Consumer projects do two things:
+### Quick start
 
-### 1. Import shared rules (via git submodule + `@import`)
+1. Install the core plugin (adds the workbench marketplace and the `sync-workbench` skill):
 
 ```bash
-# Add claude-workbench as a submodule
-git submodule add https://github.com/KiringYJ/claude-workbench.git vendor/claude-workbench
+claude plugin install core --marketplace workbench --source github:KiringYJ/claude-workbench
 ```
 
-Then in your project's `CLAUDE.md`:
+2. Run the sync skill to set up rules and plugin settings:
 
-```markdown
-# Project Rules
-
-@vendor/claude-workbench/rules/core.md
-@vendor/claude-workbench/rules/rust.md
+```
+/sync-workbench rust
 ```
 
-Import only the rules you need. `core.md` is recommended for all projects.
+This generates `.claude/rules/*.md` and merges plugin settings into `.claude/settings.json`.
 
-### 2. Enable plugins (via settings.json)
+### Profiles
 
-Add to your project's `.claude/settings.json`:
+| Profile  | Rules              | Plugins                                    |
+|----------|--------------------|--------------------------------------------|
+| `base`   | core               | core@workbench                             |
+| `rust`   | core, rust         | core@workbench, rust@workbench             |
+| `python` | core, python       | core@workbench, python@workbench           |
+| `full`   | core, rust, python | core@workbench, rust@workbench, python@workbench |
 
-```json
-{
-  "extraKnownMarketplaces": {
-    "workbench": {
-      "source": {
-        "source": "github",
-        "repo": "KiringYJ/claude-workbench"
-      }
-    }
-  },
-  "enabledPlugins": {
-    "core@workbench": true,
-    "rust@workbench": true
-  }
-}
+### Updating
+
+Re-run `/sync-workbench` at any time. It is idempotent — unchanged files are skipped, and existing settings (permissions, env, custom plugins) are preserved.
+
+Flags:
+- `--rules-only` — only sync `.claude/rules/*.md`
+- `--settings-only` — only sync `.claude/settings.json`
+- `--check` — report whether anything is out of date without writing
+
+### Standalone script (CI / no-Claude usage)
+
+```bash
+python scripts/sync_workbench.py rust --source /path/to/claude-workbench --target /path/to/project
+python scripts/sync_workbench.py --check --source /path/to/claude-workbench --target /path/to/project
 ```
-
-Enable only the plugins you need.
 
 ## Structure
 
 ```
+workbench.json                     # profile definitions (rules + plugins per profile)
 rules/
-  core.md                          # shared rules (imported by consumer projects)
+  core.md                          # shared rules (synced to consumer projects)
   python.md
   rust.md
+scripts/
+  sync_workbench.py                # standalone sync script for CI / non-Claude usage
 plugins/
   core/
     .claude-plugin/
@@ -92,6 +93,8 @@ plugins/
     skills/
       review/
         SKILL.md
+      sync-workbench/
+        SKILL.md                   # sync rules + settings to consumer projects
       update-document/
         SKILL.md
       update-todo/

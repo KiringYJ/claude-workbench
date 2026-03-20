@@ -1,0 +1,36 @@
+{
+  "source": {
+    "github": "KiringYJ/claude-workbench",
+    "branch": "main"
+  },
+  "marketplaces": {
+    "workbench": {
+      "source": {
+        "source": "github",
+        "repo": "KiringYJ/claude-workbench"
+      }
+    }
+  },
+  "profiles": {
+    "base": {
+      "description": "Core engineering rules only",
+      "rules": ["core"],
+      "plugins": ["core@workbench"]
+    },
+    "rust": {
+      "description": "Core + Rust rules and plugins",
+      "rules": ["core", "rust"],
+      "plugins": ["core@workbench", "rust@workbench"]
+    },
+    "python": {
+      "description": "Core + Python rules and plugins",
+      "rules": ["core", "python"],
+      "plugins": ["core@workbench", "python@workbench"]
+    },
+    "full": {
+      "description": "All rules and plugins",
+      "rules": ["core", "rust", "python"],
+      "plugins": ["core@workbench", "rust@workbench", "python@workbench"]
+    }
+  }
+}
