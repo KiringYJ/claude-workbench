@@ -1,6 +1,5 @@
 # Claude Code runtime state
 .omc/
-.claude/settings.local.json
 
 # Python
 __pycache__/
