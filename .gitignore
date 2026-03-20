@@ -1,6 +1,6 @@
 # Claude Code runtime state
 .omc/
-.claude/
+.claude/settings.local.json
 
 # OS
 Thumbs.db
