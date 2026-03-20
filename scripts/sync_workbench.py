@@ -6,7 +6,7 @@ Usage:
     python scripts/sync_workbench.py rust --source /path/to/claude-workbench --target /path/to/project
     python scripts/sync_workbench.py rust --source /path/to/claude-workbench --rules-only
     python scripts/sync_workbench.py rust --source /path/to/claude-workbench --settings-only
-    python scripts/sync_workbench.py --check
+    python scripts/sync_workbench.py rust --source /path/to/claude-workbench --check
 """
 
 from __future__ import annotations
@@ -144,42 +144,13 @@ def check_settings(config: dict, profile: dict, target: Path) -> bool:
     return json.dumps(settings, sort_keys=True) != original
 
 
-def save_project_config(
-    profile_name: str, source_repo: str, target: Path
-) -> None:
-    """Write .workbench.json to record profile choice for future syncs."""
-    config_path = target / ".workbench.json"
-    config = {
-        "profile": profile_name,
-        "source": source_repo,
-    }
-    config_path.write_text(
-        json.dumps(config, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
-
-
-def resolve_profile_from_project(target: Path) -> str | None:
-    """Read saved profile from .workbench.json if it exists."""
-    config_path = target / ".workbench.json"
-    if not config_path.exists():
-        return None
-    try:
-        data = json.loads(config_path.read_text(encoding="utf-8"))
-        return data.get("profile")
-    except (json.JSONDecodeError, OSError):
-        return None
-
-
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Sync claude-workbench rules and settings to a project",
     )
     parser.add_argument(
         "profile",
-        nargs="?",
-        help="Profile name (base, rust, python, full). "
-        "Omit to use saved profile from .workbench.json.",
+        help="Profile name (base, rust, python, full)",
     )
     parser.add_argument(
         "--source",
@@ -217,17 +188,7 @@ def main() -> None:
     config = load_workbench_config(args.source)
     target = args.target.resolve()
 
-    # Resolve profile
-    profile_name = args.profile or resolve_profile_from_project(target)
-    if not profile_name:
-        available = ", ".join(config["profiles"])
-        logger.error(
-            "No profile specified and no .workbench.json found. "
-            "Available profiles: %s",
-            available,
-        )
-        sys.exit(1)
-
+    profile_name = args.profile
     if profile_name not in config["profiles"]:
         available = ", ".join(config["profiles"])
         logger.error(
@@ -262,13 +223,6 @@ def main() -> None:
 
     if sync_both or args.settings_only:
         settings_changed = sync_settings(config, profile, target)
-
-    # Save project config so future syncs don't need profile argument
-    save_project_config(
-        profile_name,
-        config.get("source", {}).get("github", ""),
-        target,
-    )
 
     if not rules_changed and not settings_changed:
         print("Everything is up to date.")

@@ -13,8 +13,7 @@ Idempotent — safe to run repeatedly. Only overwrites managed files.
 ## Step 1: Determine Profile
 
 1. If a profile argument was provided, use it.
-2. Else if `.workbench.json` exists in the project root, read the `profile` field.
-3. Else ask the user to choose: `base`, `rust`, `python`, or `full`.
+2. Else ask the user to choose: `base`, `rust`, `python`, or `full`.
 
 | Profile  | Rules              | Plugins                                    |
 |----------|--------------------|--------------------------------------------|
@@ -81,19 +80,7 @@ Set each plugin in the profile's `plugins` array to `true`.
 
 Write back with `indent=2`.
 
-## Step 5: Save Project Config
-
-Write `.workbench.json` to the project root:
-```json
-{
-  "profile": "<selected-profile>",
-  "source": "KiringYJ/claude-workbench"
-}
-```
-
-This allows future `/sync-workbench` runs without specifying a profile.
-
-## Step 6: Report
+## Step 5: Report
 
 Print a summary:
 - Which rules were synced vs already up to date
