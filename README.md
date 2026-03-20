@@ -119,6 +119,14 @@ plugins/
     skills/
       optimize/
         SKILL.md
+.claude/
+  skills/
+    new-plugin/
+      SKILL.md
+    plugin-test/
+      SKILL.md
+    release/
+      SKILL.md
 ```
 
 ## License
