@@ -63,6 +63,14 @@ Every non-trivial task **must** go through plan mode before implementation begin
 
 Skipping straight to code without a plan is a **hard blocker** — treat it the same as skipping tests.
 
+### Project-Level Rule (mandatory)
+
+Store all behavioral rules, directives, and conventions in project-level `CLAUDE.md` files — never in user-level memory. Project-level config is version-controlled, replicable, and travels with the repo.
+
+### Skill-First Rule (mandatory)
+
+When a task matches an available skill (e.g. `commit-commands:commit` for committing, `core:review` for code review), **always invoke the Skill tool** instead of manually running commands. Skills encode project-specific workflows — bypassing them loses that value.
+
 ### Do
 - Utilize subagents (Agent tool) as early as possible — parallelize independent research, exploration, and validation tasks to maximize throughput.
 - Propose at least one *simpler* alternative if the plan seems complex.
