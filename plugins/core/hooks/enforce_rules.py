@@ -143,7 +143,8 @@ def main():
         else:
             print("{}")
 
-    except Exception:
+    except Exception as exc:
+        print(f"enforce_rules: unhandled error: {exc}", file=sys.stderr)
         print("{}")
 
     sys.exit(0)

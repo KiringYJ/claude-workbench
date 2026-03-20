@@ -84,13 +84,15 @@ plugins/
     .claude-plugin/
       plugin.json
     hooks/
-      doc_sync.py
+      document_sync.py
       enforce_rules.py
       hooks.json
+      test_document_sync.py
+      test_enforce_rules.py
     skills/
       review/
         SKILL.md
-      update-doc/
+      update-document/
         SKILL.md
       update-todo/
         SKILL.md

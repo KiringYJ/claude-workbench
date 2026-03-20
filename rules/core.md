@@ -76,6 +76,11 @@ When a task matches an available skill (e.g. `commit-commands:commit` for commit
 - `commit-commands:commit-push-pr` — commit, push, and open a PR
 - There is no commit-and-push-without-PR skill. For "commit and push", use `commit-commands:commit` then `git push` manually.
 
+**core plugin skill reference:**
+- `core:review` — code review (Linus Mode)
+- `core:update-document` — review and update project documentation
+- `core:update-todo` — review and update project TODO.md
+
 ### Hookify-First Rule (mandatory)
 
 Prefer **hookify rules** (`hookify.<name>.md`) for simple pattern-match enforcement (block/warn). Use **raw hook scripts** (`hooks/`) only when conditional logic is required (e.g., running lint/format checks and blocking on failure). Reserve **skills** for genuine interactive workflows (e.g. `optimize`), never for enforcement gates.

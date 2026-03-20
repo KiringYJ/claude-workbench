@@ -1,5 +1,5 @@
 ---
-name: update-doc
+name: update-document
 description: Review and update project documentation to match current state
 ---
 

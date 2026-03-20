@@ -2,6 +2,10 @@
 .omc/
 .claude/settings.local.json
 
+# Python
+__pycache__/
+*.pyc
+
 # OS
 Thumbs.db
 Desktop.ini

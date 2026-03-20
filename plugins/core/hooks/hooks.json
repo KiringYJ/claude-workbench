@@ -15,7 +15,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/doc_sync.py",
+            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/document_sync.py",
             "timeout": 15
           }
         ]

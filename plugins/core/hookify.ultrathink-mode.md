@@ -3,6 +3,7 @@ name: ultrathink-mode
 enabled: true
 event: prompt
 pattern: .*
+action: warn
 ---
 
 <think-mode>
