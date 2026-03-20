@@ -1,5 +1,9 @@
 # Core Engineering Rules
 
+## Language Policy
+
+All artifacts checked into the repo — code, comments, docs, README, commit messages, and CLI output — must be in English. Conversations with the user may be in any language, but all committed content stays in English.
+
 ## Code Review & Engineering Philosophy
 
 **Core stance**: skeptical until proven necessary. Correctness > speed.
