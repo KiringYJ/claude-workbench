@@ -51,6 +51,8 @@ plugins/
         SKILL.md
       update-doc/
         SKILL.md
+      update-todo/
+        SKILL.md
     .mcp.json
     CLAUDE.md
     hookify.block-bad-git-add.md
