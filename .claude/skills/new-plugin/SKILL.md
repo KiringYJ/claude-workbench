@@ -19,13 +19,12 @@ Scaffold a new plugin in the workbench with the standard directory structure.
    - `plugins/<name>/` already exists
    - Name contains uppercase or special characters (must be lowercase alphanumeric + hyphens)
 
-2. **Create the directory structure:**
+2. **Create the plugin directory structure:**
 
 ```
 plugins/<name>/
   .claude-plugin/
     plugin.json
-  CLAUDE.md
 ```
 
 3. **Generate `plugin.json`** with this template:
@@ -38,7 +37,7 @@ plugins/<name>/
 }
 ```
 
-4. **Generate `CLAUDE.md`** with this template:
+4. **Create `rules/<name>.md`** with this template:
 
 ```markdown
 # <Name> Development Rules
@@ -75,7 +74,7 @@ plugins/<name>/
 ```
 
 6. **Report what was created** and remind the user to:
-   - Fill in the CLAUDE.md template
+   - Fill in the `rules/<name>.md` template
    - Add skills in `plugins/<name>/skills/` if needed
    - Add hooks in `plugins/<name>/hooks/` if needed
    - Add hookify rules as `plugins/<name>/hookify.*.md` if needed

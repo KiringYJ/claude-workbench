@@ -1,6 +1,6 @@
 ---
 name: plugin-test
-description: Validate a workbench plugin's structure, CLAUDE.md, hooks, and skills
+description: Validate a workbench plugin's structure, rules, hooks, and skills
 disable-model-invocation: true
 ---
 
@@ -21,10 +21,9 @@ Validate that a workbench plugin is structurally correct and ready to ship.
 ### Structure checks
 - `plugins/<name>/.claude-plugin/plugin.json` exists and is valid JSON
 - `plugin.json` has required fields: `name`, `description`, `version`
-- `plugins/<name>/CLAUDE.md` exists and is non-empty
 - Plugin is listed in `.claude-plugin/marketplace.json`
 
-### CLAUDE.md checks
+### Rules checks (if `rules/<name>.md` exists)
 - File parses as valid Markdown (no broken tables, unclosed fences)
 - No TODO/FIXME/HACK markers left in the file
 - If the plugin has language-specific rules, they don't contradict core rules
@@ -47,7 +46,7 @@ Validate that a workbench plugin is structurally correct and ready to ship.
 ```
 Plugin: <name>
   [PASS] plugin.json valid
-  [PASS] CLAUDE.md present
+  [PASS] rules/<name>.md present (or [SKIP] no rules file)
   [FAIL] hooks/guard.sh missing execute permission
   ...
 Result: X/Y checks passed

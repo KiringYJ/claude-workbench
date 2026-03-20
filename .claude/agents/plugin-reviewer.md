@@ -10,12 +10,12 @@ You are a specialized reviewer for the claude-workbench plugin marketplace. Your
 ## Review Checklist
 
 ### 1. Core rule conflicts
-- Read `plugins/core/CLAUDE.md` to understand the base rules
-- Check that the changed plugin does not contradict core rules
+- Read `rules/core.md` to understand the base rules
+- Check that the changed plugin's rules file (`rules/<name>.md`) does not contradict core rules
 - If a language plugin relaxes a core rule (e.g., allowing an abbreviation), it must explicitly declare the exception
 
 ### 2. Cross-plugin consistency
-- Naming conventions across plugins should follow the same structure (language-specific section, workflow section)
+- Naming conventions across rules files should follow the same structure (language-specific section, workflow section)
 - Log level definitions should align with the core Output & Logging Policy
 - Workflow steps should follow the same TDD pattern (RED -> GREEN -> Refactor)
 
