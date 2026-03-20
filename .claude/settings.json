@@ -3,9 +3,9 @@
     "workbench": {
       "source": {
         "source": "github",
-        "owner": "KiringYJ",
-        "repo": "claude-workbench"
-      }
+        "repo": "KiringYJ/claude-workbench"
+      },
+      "autoUpdate": true
     }
   },
   "enabledPlugins": {
