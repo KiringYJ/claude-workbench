@@ -2,8 +2,9 @@
   "extraKnownMarketplaces": {
     "workbench": {
       "source": {
-        "source": "directory",
-        "path": "."
+        "source": "github",
+        "owner": "KiringYJ",
+        "repo": "claude-workbench"
       }
     }
   },
