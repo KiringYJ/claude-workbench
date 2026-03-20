@@ -1,0 +1,16 @@
+{
+  "name": "python",
+  "version": "1.0.0",
+  "description": "Python development rules, uv/ruff/ty workflow, logging conventions, and commit/optimize/pre-push skills",
+  "keywords": ["python", "ruff", "uv", "pytest", "ty", "lsp"],
+  "lspServers": {
+    "ty": {
+      "command": "ty",
+      "args": ["server"],
+      "extensionToLanguage": {
+        ".py": "python",
+        ".pyi": "python"
+      }
+    }
+  }
+}
