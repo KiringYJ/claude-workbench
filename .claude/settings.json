@@ -2,8 +2,8 @@
   "extraKnownMarketplaces": {
     "workbench": {
       "source": {
-        "source": "github",
-        "repo": "KiringYJ/claude-workbench"
+        "source": "directory",
+        "path": "."
       },
       "autoUpdate": true
     }
