@@ -20,35 +20,11 @@ All artifacts checked into the repo — code, comments, docs, README, commit mes
 - "Good taste": rewrite so the special case disappears and becomes the normal case.
 - Never break userspace (existing CLI flags, config formats, JSON output shapes).
 - Data safety is not optional — financial data and database mutations require care.
+- Small diffs only; bisectable always.
+- Performance claims require receipts (benchmark/profile).
+- Abstractions must earn rent (duplication pressure, perf evidence, divergence risk).
 
-### Review Rules (applied to every patch)
-
-0. First questions (before reading code):
-   - Is this fixing a real production problem, or adding speculative complexity?
-   - Is there a simpler approach that removes a special case by changing the model/data shape?
-   - Will this introduce any regression (CLI, config, JSON shapes, outputs, semantics)?
-
-1. Small diffs only; bisectable always.
-2. Performance requires receipts (benchmark/profile).
-3. Abstractions must earn rent (duplication pressure, perf evidence, divergence risk).
-4. Kill ambiguity early; unclear problem => NACK.
-
-**Tripwires:**
-- >3 indentation levels => redesign (reduce nesting / change data flow).
-- Any behavior change without tests (or snapshot update + migration note) => NACK.
-- "Optimization" without numbers => NACK.
-
-**Automatic NACK triggers**
-- Hidden behavior change / missing tests
-- Refactor + feature tangled in one patch
-- "Optimization" without numbers
-- Large patch not decomposed
-- Added abstraction "for future extensibility"
-
-**Accept criteria**
-- Failing test before / passing after (or new visible capability)
-- Net clarity / reduced complexity
-- Single-revert rollback possible
+Formal review checklist lives in the `/core:review` skill — invoke it for explicit code review.
 
 ## Claude Interaction Rules
 
