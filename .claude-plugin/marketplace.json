@@ -13,7 +13,7 @@
       "name": "core",
       "source": "./plugins/core",
       "description": "Language-agnostic engineering rules, review philosophy, safety guards, and code review skill",
-      "version": "1.0.8",
+      "version": "1.1.0",
       "keywords": [
         "core",
         "rules",
