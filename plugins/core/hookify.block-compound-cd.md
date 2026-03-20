@@ -13,3 +13,4 @@ Do not use `cd <path> && command`. The working directory persists between Bash c
 **Correct approach:**
 1. Run `cd <path>` once as a standalone call at the start of the session
 2. Use bare commands in all subsequent calls (e.g., `cargo test`, `git status`)
+3. The working directory persists between Bash calls — no need to repeat `cd`
