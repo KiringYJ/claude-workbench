@@ -1,0 +1,15 @@
+extends: null
+
+modules:
+  - base
+  - git
+  - security
+  - testing
+  - review
+
+targets:
+  guide: true
+  claude: true
+  codex: true
+  gemini: true
+  opencode: true

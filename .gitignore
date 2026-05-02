@@ -1,5 +1,6 @@
-# Claude Code runtime state
+# Local agent runtime state
 .omc/
+.omx/
 
 # Python
 .venv/

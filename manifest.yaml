@@ -1,0 +1,56 @@
+name: agent-workbench
+version: 0.1.0
+
+modules:
+  base:
+    path: guide/base.md
+  git:
+    path: guide/git.md
+  security:
+    path: guide/security.md
+  testing:
+    path: guide/testing.md
+  review:
+    path: guide/review.md
+  languages/rust:
+    path: guide/languages/rust.md
+  languages/python:
+    path: guide/languages/python.md
+  languages/typescript:
+    path: guide/languages/typescript.md
+  tools/claude:
+    path: guide/tools/claude.md
+  tools/codex:
+    path: guide/tools/codex.md
+  tools/gemini:
+    path: guide/tools/gemini.md
+  tools/opencode:
+    path: guide/tools/opencode.md
+
+profiles:
+  base:
+    path: profiles/base.yaml
+  rust:
+    path: profiles/rust.yaml
+  python:
+    path: profiles/python.yaml
+  typescript:
+    path: profiles/typescript.yaml
+
+templates:
+  guide:
+    path: templates/AI_AGENT_GUIDE.md.tpl
+  project:
+    path: templates/AI_AGENT_PROJECT.md.tpl
+  claude:
+    path: templates/CLAUDE.md.tpl
+  agents:
+    path: templates/AGENTS.md.tpl
+  gemini:
+    path: templates/GEMINI.md.tpl
+  opencode:
+    path: templates/opencode.json.tpl
+  codex:
+    path: templates/codex.config.toml.tpl
+  config:
+    path: templates/agent-workbench.yaml.tpl
