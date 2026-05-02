@@ -1,3 +1,5 @@
+<!-- agent-workbench: managed portable-prompt -->
+
 # Audit Agent Workbench Prompt
 
 Audit a consumer repository for consistency with the vendor-neutral `agent-workbench` model. This prompt is read-only unless the user explicitly asks for repairs.
@@ -49,7 +51,16 @@ Do not modify files in audit mode. Inspect and report only.
    - Has valid `source`, `profile`, `modules`, `targets`, and `preserve` sections.
    - Names modules that exist in the workbench manifest.
 
-9. Vendor neutrality
+9. Portable workflows
+   - `manifest.yaml` registers capabilities and each capability file exists.
+   - Each capability declares a canonical skill or prompt, portability level, and vendor targets.
+   - `.agents/prompts/` contains the registered portable prompts from the workbench manifest.
+   - `.agents/skills/` contains the registered portable skills from the workbench manifest.
+   - Canonical workflow content lives under `.agents/`, not only in Claude/Codex/Gemini-specific folders.
+   - If the Claude target is enabled, generated `.claude/skills/*/SKILL.md` files are thin surfaces derived from canonical capabilities.
+   - No registered portable prompt or skill is a symlink.
+
+10. Vendor neutrality
    - No Claude marketplace/plugin dependency is required for guide loading.
    - No git submodule is required.
    - No global or user-scope configuration is required.

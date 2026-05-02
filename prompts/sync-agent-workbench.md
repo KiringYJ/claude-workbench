@@ -1,3 +1,5 @@
+<!-- agent-workbench: managed portable-prompt -->
+
 # Sync Agent Workbench Prompt
 
 Use this prompt to synchronize a consumer repository with the vendor-neutral `agent-workbench` model. This is an LLM-executed workflow; it does not require a custom CLI, marketplace, plugin, submodule, global configuration, or machine-local path.
@@ -6,9 +8,10 @@ Use this prompt to synchronize a consumer repository with the vendor-neutral `ag
 
 Interpret the user's request and select one mode:
 
-- **full sync**: update managed guide, thin entrypoints, OpenCode config, Codex config, and create missing project/config files.
+- **full sync**: update managed guide, thin entrypoints, OpenCode config, Codex config, portable prompts, portable skills, and create missing project/config files.
 - **guide-only sync**: update only `AI_AGENT_GUIDE.md` and create `.agent-workbench.yaml` if missing.
 - **entrypoints-only sync**: update only `CLAUDE.md`, `AGENTS.md`, `GEMINI.md`, `opencode.json`, and `.codex/config.toml`.
+- **portable-workflows sync**: update only managed `.agents/prompts/` and `.agents/skills/` artifacts.
 - **audit-only mode**: inspect and report; do not modify files.
 - **repair missing files**: create or repair missing/malformed instruction/config files while preserving manual content.
 
@@ -31,6 +34,10 @@ If the user does not specify a mode, use **full sync**. If the user specifies a 
   - `opencode.json`
   - `.codex/config.toml`
   - `.agent-workbench.yaml`
+  - `.agents/prompts/<registered-prompt>.md`
+  - `.agents/skills/<registered-skill>/SKILL.md`
+  - `.agents/skills/<registered-skill>/scripts/**`, `.agents/skills/<registered-skill>/references/**`, and `.agents/skills/<registered-skill>/assets/**` when present in the workbench source
+  - `.claude/skills/<registered-skill>/SKILL.md` when the Claude target is enabled and the capability target requests a Claude generated skill surface
 
 ## Inputs to read
 
@@ -42,6 +49,8 @@ If the user does not specify a mode, use **full sync**. If the user specifies a 
    - selected `profiles/*.yaml`
    - selected `guide/**/*.md`
    - `templates/*.tpl`
+   - registered `portable_prompts` and `portable_skills` from `manifest.yaml`
+   - registered `capabilities/*/capability.yaml` and `capabilities/*/vendors/*.md`
 
 ## Profile and module resolution
 
@@ -139,6 +148,29 @@ If `.codex/config.toml` exists:
 - Add `project_doc_max_bytes = 65536` only if no `project_doc_max_bytes` setting exists.
 - Do not overwrite project-specific model, approval, sandbox, tool, or path settings.
 
+## Portable prompts and skills
+
+For full sync and portable-workflows sync, copy the registered workflow artifacts from the workbench manifest into project-local vendor-neutral paths:
+
+- `portable_prompts.<name>.path` -> `.agents/prompts/<name>.md`
+- `portable_skills.<name>.path` -> `.agents/skills/<name>/SKILL.md`
+- `capabilities.<name>.path` records the canonical skill, canonical prompts, vendor adapters, official-preferred behavior, and optional generated vendor outputs.
+
+Rules:
+
+- Create `.agents/prompts/` and `.agents/skills/` when missing.
+- Copy the managed prompt/skill content from the workbench source.
+- If a registered skill folder contains `scripts/`, `references/`, or `assets/`, copy those resources into `.agents/skills/<name>/`.
+- Do not delete unregistered local prompts or skills.
+- Do not overwrite files under `.agents/skills/<name>/` that are not part of the registered managed source skill.
+- Prefer real copied directories over symlinks for portability.
+- Do not create vendor-specific mirrors such as `.codex/skills/`, `.gemini/skills/`, or `.opencode/skills/` unless the user explicitly requests them.
+- When `targets.claude: true`, generate `.claude/skills/<name>/SKILL.md` for capabilities whose Claude target mode starts with `generated-skill` or is `official-preferred` with fallback enabled. Build it from the canonical neutral `SKILL.md` plus the small `capabilities/<name>/vendors/claude.md` adapter note. Do not install Claude plugins or marketplace entries.
+- For Codex, Gemini, and OpenCode, prefer `.agents/skills/<name>/SKILL.md` as the shared generated surface unless the user explicitly requests a vendor-native mirror.
+- If a capability is marked `official-preferred` for the active vendor, mention the native implementation as the preferred invocation when available, but still keep the neutral fallback skill available.
+- Treat `agent-workbench: managed portable-prompt` and `agent-workbench: managed portable-skill` as overwrite markers.
+- If a consumer project already has a local `.agents/prompts/<name>.md` or `.agents/skills/<name>/SKILL.md` with unmarked manual edits, replace it only when the file carries an agent-workbench managed marker or when the user requested repair/full overwrite. Otherwise report the conflict.
+
 ## Final report
 
 End with a concise diff-style summary:
@@ -148,5 +180,6 @@ End with a concise diff-style summary:
 - Files updated.
 - Files intentionally left unchanged, especially `AI_AGENT_PROJECT.md`.
 - Manual blocks preserved.
+- Portable prompts and skills synced or skipped.
 - Any parse errors, skipped modules, or assumptions.
 - Confirmation that no application source code, dependencies, global config, marketplace, plugin installation, or submodule was modified.

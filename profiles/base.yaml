@@ -6,6 +6,7 @@ modules:
   - security
   - testing
   - review
+  - workflows
 
 targets:
   guide: true
@@ -13,3 +14,5 @@ targets:
   codex: true
   gemini: true
   opencode: true
+  portable_prompts: true
+  portable_skills: true

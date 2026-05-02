@@ -2,7 +2,7 @@
 
 ## Architecture
 
-This repository is the source workbench for vendor-neutral AI-agent instructions. Shared guidance lives in `guide/`, profile composition lives in `profiles/`, consumer-facing templates live in `templates/`, and prompt-driven workflows live in `prompts/`.
+This repository is the source workbench for vendor-neutral AI-agent instructions. Shared guidance lives in `guide/`, profile composition lives in `profiles/`, consumer-facing templates live in `templates/`, prompt-driven workflows live in `prompts/`, portable Agent Skills live in `skills/`, and capability metadata plus vendor adapters live in `capabilities/`.
 
 Legacy Claude Marketplace/plugin assets from the previous design are preserved under `archive/claude-workbench-legacy/` for reference only.
 
@@ -27,7 +27,9 @@ For prompt/template edits, also verify that `manifest.yaml` references existing 
 - `guide/` — source modules for generated guides.
 - `profiles/` — module selection profiles.
 - `templates/` — files created in consumer projects.
-- `prompts/` — LLM-executed sync, audit, and repair workflows.
+- `prompts/` — LLM-executed sync, audit, repair, loop, guardrail, skill-authoring, and commit workflows.
+- `skills/` — portable Agent Skills copied to consumer projects under `.agents/skills/`.
+- `capabilities/` — canonical capability metadata, portability level, official-preferred notes, and thin vendor adapters.
 - `archive/claude-workbench-legacy/` — deprecated Claude-centric implementation retained for reference.
 
 ## Domain Terms

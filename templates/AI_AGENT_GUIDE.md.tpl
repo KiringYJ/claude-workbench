@@ -10,6 +10,4 @@ manual-edits: preserve-marked-sections-only
 
 This file is generated from `agent-workbench` modules. Re-run the sync prompt to update it. Keep project-specific details in `AI_AGENT_PROJECT.md`.
 
-{{manual_blocks}}
-
-{{modules}}
+{{manual_blocks}}{{modules}}

@@ -28,6 +28,9 @@ The sync process may update only:
 - `opencode.json`
 - `.codex/config.toml`
 - `.agent-workbench.yaml`
+- Registered portable prompts under `.agents/prompts/`
+- Registered portable skills under `.agents/skills/`
+- Generated Claude project skills under `.claude/skills/` when the Claude target is enabled
 
 Any broader edit requires explicit user authorization.
 

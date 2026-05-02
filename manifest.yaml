@@ -1,5 +1,5 @@
 name: agent-workbench
-version: 0.1.0
+version: 0.4.0
 
 modules:
   base:
@@ -12,6 +12,8 @@ modules:
     path: guide/testing.md
   review:
     path: guide/review.md
+  workflows:
+    path: guide/workflows.md
   languages/rust:
     path: guide/languages/rust.md
   languages/python:
@@ -54,3 +56,49 @@ templates:
     path: templates/codex.config.toml.tpl
   config:
     path: templates/agent-workbench.yaml.tpl
+
+portable_prompts:
+  sync-agent-workbench:
+    path: prompts/sync-agent-workbench.md
+  audit-agent-workbench:
+    path: prompts/audit-agent-workbench.md
+  repair-agent-workbench:
+    path: prompts/repair-agent-workbench.md
+  loop-until-done:
+    path: prompts/loop-until-done.md
+  create-guardrail:
+    path: prompts/create-guardrail.md
+  create-agent-skill:
+    path: prompts/create-agent-skill.md
+  commit-workflow:
+    path: prompts/commit-workflow.md
+  linus-review:
+    path: prompts/linus-review.md
+
+portable_skills:
+  sync-agent-workbench:
+    path: skills/sync-agent-workbench/SKILL.md
+  loop-until-done:
+    path: skills/loop-until-done/SKILL.md
+  guardrail-authoring:
+    path: skills/guardrail-authoring/SKILL.md
+  skill-authoring:
+    path: skills/skill-authoring/SKILL.md
+  commit-workflow:
+    path: skills/commit-workflow/SKILL.md
+  linus-review:
+    path: skills/linus-review/SKILL.md
+
+capabilities:
+  sync-agent-workbench:
+    path: capabilities/sync-agent-workbench/capability.yaml
+  loop-until-done:
+    path: capabilities/loop-until-done/capability.yaml
+  guardrail-authoring:
+    path: capabilities/guardrail-authoring/capability.yaml
+  skill-authoring:
+    path: capabilities/skill-authoring/capability.yaml
+  commit-workflow:
+    path: capabilities/commit-workflow/capability.yaml
+  linus-review:
+    path: capabilities/linus-review/capability.yaml

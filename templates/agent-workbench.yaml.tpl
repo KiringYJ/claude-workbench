@@ -10,6 +10,7 @@ modules:
   - security
   - testing
   - review
+  - workflows
 
 targets:
   guide: true
@@ -17,6 +18,8 @@ targets:
   codex: true
   gemini: true
   opencode: true
+  portable_prompts: true
+  portable_skills: true
 
 preserve:
   project_file: AI_AGENT_PROJECT.md

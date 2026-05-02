@@ -17,6 +17,9 @@ The model is:
 - `GEMINI.md` — thin Gemini entrypoint.
 - `opencode.json` — optional OpenCode config that explicitly loads the guide files.
 - `.codex/config.toml` — optional project-scoped Codex config.
+- `.agents/prompts/` — portable prompt workflows available to any vendor agent.
+- `.agents/skills/` — portable Agent Skills available to agents that support project-local skills, and readable by agents that do not.
+- `.claude/skills/` — optional generated Claude-native project skills derived from the same canonical capabilities.
 - `.agent-workbench.yaml` — project sync profile.
 
 No marketplace, plugin installation, git submodule, global CLI, user-scope config, or machine-local path is required.
@@ -33,6 +36,7 @@ agent-workbench/
 │  ├─ security.md
 │  ├─ testing.md
 │  ├─ review.md
+│  ├─ workflows.md
 │  ├─ languages/
 │  │  ├─ rust.md
 │  │  ├─ python.md
@@ -56,10 +60,41 @@ agent-workbench/
 │  ├─ opencode.json.tpl
 │  ├─ codex.config.toml.tpl
 │  └─ agent-workbench.yaml.tpl
-└─ prompts/
-   ├─ sync-agent-workbench.md
-   ├─ audit-agent-workbench.md
-   └─ repair-agent-workbench.md
+├─ prompts/
+│  ├─ sync-agent-workbench.md
+│  ├─ audit-agent-workbench.md
+│  ├─ repair-agent-workbench.md
+│  ├─ loop-until-done.md
+│  ├─ create-guardrail.md
+│  ├─ create-agent-skill.md
+│  ├─ commit-workflow.md
+│  └─ linus-review.md
+├─ capabilities/
+│  ├─ sync-agent-workbench/
+│  │  ├─ capability.yaml
+│  │  └─ vendors/
+│  ├─ loop-until-done/
+│  │  ├─ capability.yaml
+│  │  └─ vendors/
+│  ├─ guardrail-authoring/
+│  │  ├─ capability.yaml
+│  │  └─ vendors/
+│  ├─ skill-authoring/
+│  │  ├─ capability.yaml
+│  │  └─ vendors/
+│  ├─ commit-workflow/
+│  │  ├─ capability.yaml
+│  │  └─ vendors/
+│  └─ linus-review/
+│     ├─ capability.yaml
+│     └─ vendors/
+└─ skills/
+   ├─ sync-agent-workbench/
+   ├─ loop-until-done/
+   ├─ guardrail-authoring/
+   ├─ skill-authoring/
+   ├─ commit-workflow/
+   └─ linus-review/
 ```
 
 Legacy Claude Marketplace/plugin assets from the previous design are preserved under `archive/claude-workbench-legacy/` for reference. They are not the primary distribution mechanism.
@@ -76,6 +111,31 @@ my-project/
 ├─ AGENTS.md
 ├─ GEMINI.md
 ├─ opencode.json
+├─ .agents/
+│  ├─ prompts/
+│  │  ├─ sync-agent-workbench.md
+│  │  ├─ audit-agent-workbench.md
+│  │  ├─ repair-agent-workbench.md
+│  │  ├─ loop-until-done.md
+│  │  ├─ create-guardrail.md
+│  │  ├─ create-agent-skill.md
+│  │  ├─ commit-workflow.md
+│  │  └─ linus-review.md
+│  └─ skills/
+│     ├─ sync-agent-workbench/
+│     ├─ loop-until-done/
+│     ├─ guardrail-authoring/
+│     ├─ skill-authoring/
+│     ├─ commit-workflow/
+│     └─ linus-review/
+├─ .claude/
+│  └─ skills/
+│     ├─ sync-agent-workbench/
+│     ├─ loop-until-done/
+│     ├─ guardrail-authoring/
+│     ├─ skill-authoring/
+│     ├─ commit-workflow/
+│     └─ linus-review/
 ├─ .codex/
 │  └─ config.toml
 └─ .agent-workbench.yaml
@@ -242,8 +302,41 @@ The sync prompt supports natural-language modes:
 - `full sync` — guide, project file if missing, entrypoints, and agent configs.
 - `guide-only sync` — only `AI_AGENT_GUIDE.md` and missing `.agent-workbench.yaml`.
 - `entrypoints-only sync` — only vendor entrypoints and agent config files.
+- `portable-workflows sync` — only `.agents/prompts/` and `.agents/skills/`.
 - `audit-only mode` — inspect consistency without modifying files.
 - `repair missing files` — recreate missing or malformed instruction files while preserving manual content.
+
+## Portable workflows included in every project
+
+The base profile includes a vendor-neutral workflow pack. These are copied into consumer projects under `.agents/` so Claude Code, Codex, Gemini, OpenCode, and other agents can use the same capability names without depending on vendor marketplaces or global setup.
+
+The design is hybrid:
+
+```text
+canonical neutral capability
+        -> thin vendor adapter or generated vendor surface
+        -> optional official implementation, when available
+```
+
+Do not maintain four full copies of a workflow. Maintain one canonical skill/prompt plus small vendor adapters. When a vendor has a strong built-in implementation, mark that capability as official-preferred and keep the neutral skill as fallback.
+
+| Capability | Prompt | Skill |
+| --- | --- | --- |
+| Workbench sync, audit, repair | `.agents/prompts/sync-agent-workbench.md`, `.agents/prompts/audit-agent-workbench.md`, `.agents/prompts/repair-agent-workbench.md` | `.agents/skills/sync-agent-workbench/SKILL.md` |
+| Loop until done | `.agents/prompts/loop-until-done.md` | `.agents/skills/loop-until-done/SKILL.md` |
+| Guardrail authoring | `.agents/prompts/create-guardrail.md` | `.agents/skills/guardrail-authoring/SKILL.md` |
+| Skill authoring | `.agents/prompts/create-agent-skill.md` | `.agents/skills/skill-authoring/SKILL.md` |
+| Commit workflow | `.agents/prompts/commit-workflow.md` | `.agents/skills/commit-workflow/SKILL.md` |
+| Linus-style review | `.agents/prompts/linus-review.md` | `.agents/skills/linus-review/SKILL.md` |
+
+Vendor-native features are adapters only. For example, Codex or Gemini may auto-discover project skills from supported local skill directories, Gemini can implement Ralph-style loops with an `AfterAgent` hook, and Claude Code can expose prompts as custom commands. The canonical content still lives under `.agents/`.
+
+Capability metadata lives under `capabilities/<name>/capability.yaml`. It records the portability level:
+
+- `portable-guide` — guide-only policy.
+- `portable-skill` — neutral `SKILL.md` is enough.
+- `vendor-adapted` — shared concept with vendor-specific hooks/config/commands.
+- `official-preferred` — use the vendor-native implementation first when available, then fall back to the neutral skill.
 
 ## Profiles
 
@@ -251,7 +344,7 @@ Profiles are YAML files under `profiles/`.
 
 | Profile | Modules |
 | --- | --- |
-| `base` | `base`, `git`, `security`, `testing`, `review` |
+| `base` | `base`, `git`, `security`, `testing`, `review`, `workflows` |
 | `rust` | `base` plus `languages/rust` |
 | `python` | `base` plus `languages/python` |
 | `typescript` | `base` plus `languages/typescript` |
@@ -277,6 +370,9 @@ Sync may overwrite or update:
 - `.agent-workbench.yaml` when creating or changing the requested profile/modules.
 - `opencode.json` only by conservative merge.
 - `.codex/config.toml` only by conservative merge.
+- Registered portable prompts under `.agents/prompts/`.
+- Registered portable skills under `.agents/skills/`.
+- Generated Claude project skills under `.claude/skills/` when the Claude target is enabled.
 
 Sync must not overwrite after creation:
 
@@ -286,6 +382,8 @@ Sync must not modify:
 
 - Application source code.
 - Dependency manifests except explicitly listed agent config files.
+- Unregistered local `.agents/prompts/` or `.agents/skills/` content.
+- Hand-written vendor skill copies that are not generated from capabilities.
 - Global/user-scope configuration.
 - Marketplace/plugin installation state.
 - Git submodules.
