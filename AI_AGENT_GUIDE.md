@@ -91,12 +91,22 @@ Update documentation when behavior, commands, configuration, public APIs, file l
 
 ## Commit Messages
 
-When asked to commit, write the message to explain why the change exists, not just what files changed. Include useful trailers when they clarify constraints or verification.
+All commits should use a Conventional Commit subject line and explain why the change exists, not just what files changed.
+
+Subject format:
+
+```text
+<type>[optional scope]: <intent-oriented summary>
+```
+
+Use standard types such as `feat`, `fix`, `docs`, `refactor`, `test`, `chore`, and `ci`. Choose the type that best describes the user-visible intent of the change.
+
+For non-trivial commits, include useful Lore trailers when they clarify constraints, rejected alternatives, risk, or verification.
 
 Example shape:
 
 ```text
-Make agent instructions portable across vendors
+refactor: make agent instructions portable across vendors
 
 The repository now generates one canonical guide and keeps vendor
 entrypoints thin so projects can use Claude Code, Codex, Gemini, or
