@@ -37,6 +37,24 @@ For prompt/template edits, also verify that `manifest.yaml` references existing 
 - **Thin entrypoint**: vendor-specific file that points to the canonical guides without duplicating them.
 - **Profile**: YAML selection of modules for a language or project type.
 
+## Commit Message Requirements
+
+All commits in this repository must use a Conventional Commit subject line and preserve the Lore trailer format for decision context.
+
+Subject format:
+
+```text
+<type>[optional scope]: <intent-oriented summary>
+```
+
+Examples:
+
+- `refactor: support vendor-neutral agent workbench`
+- `docs: clarify prompt-driven sync workflow`
+- `fix: preserve manual guide blocks during repair`
+
+Use standard types such as `feat`, `fix`, `docs`, `refactor`, `test`, `chore`, and `ci`. The subject should still explain the intent of the change, not just list touched files. For non-trivial commits, include useful Lore trailers such as `Constraint:`, `Rejected:`, `Confidence:`, `Scope-risk:`, `Directive:`, `Tested:`, and `Not-tested:`.
+
 ## Project-Specific Constraints
 
 - Keep the architecture vendor-neutral.
