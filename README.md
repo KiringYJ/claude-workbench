@@ -83,6 +83,88 @@ my-project/
 
 `AGENTS.md` is the correct file name. Do not create `AGENT.md`.
 
+## Practical use in another project
+
+Use this repository as the central source of agent instruction files. Open Claude Code, Codex, Gemini, OpenCode, or another coding agent inside the consumer project, then paste one of the prompts below.
+
+First-time Rust project setup:
+
+```text
+Follow the agent-workbench sync prompt at:
+https://raw.githubusercontent.com/KiringYJ/agent-workbench/main/prompts/sync-agent-workbench.md
+
+Run a full sync of this repository with the rust profile.
+Do not modify application source code.
+Do not install dependencies, plugins, marketplaces, global config, or submodules.
+```
+
+First-time Python project setup:
+
+```text
+Follow the agent-workbench sync prompt at:
+https://raw.githubusercontent.com/KiringYJ/agent-workbench/main/prompts/sync-agent-workbench.md
+
+Run a full sync of this repository with the python profile.
+Do not modify application source code.
+Do not install dependencies, plugins, marketplaces, global config, or submodules.
+```
+
+First-time TypeScript project setup:
+
+```text
+Follow the agent-workbench sync prompt at:
+https://raw.githubusercontent.com/KiringYJ/agent-workbench/main/prompts/sync-agent-workbench.md
+
+Run a full sync of this repository with the typescript profile.
+Do not modify application source code.
+Do not install dependencies, plugins, marketplaces, global config, or submodules.
+```
+
+Generic/base project setup:
+
+```text
+Follow the agent-workbench sync prompt at:
+https://raw.githubusercontent.com/KiringYJ/agent-workbench/main/prompts/sync-agent-workbench.md
+
+Run a full sync of this repository with the base profile.
+Do not modify application source code.
+Do not install dependencies, plugins, marketplaces, global config, or submodules.
+```
+
+After the first sync, manually fill in the consumer project's `AI_AGENT_PROJECT.md` with its architecture, build commands, test commands, important files, domain terms, and project-specific constraints. Keep editing that file by hand; sync should create it only when missing and should not overwrite it.
+
+When central guidance changes, run this in each consumer project:
+
+```text
+Follow the agent-workbench sync prompt at:
+https://raw.githubusercontent.com/KiringYJ/agent-workbench/main/prompts/sync-agent-workbench.md
+
+Run a full sync of this repository using the existing .agent-workbench.yaml profile.
+Preserve AI_AGENT_PROJECT.md and marked manual blocks.
+Do not modify application source code.
+```
+
+Audit a consumer project without changing files:
+
+```text
+Follow the agent-workbench audit prompt at:
+https://raw.githubusercontent.com/KiringYJ/agent-workbench/main/prompts/audit-agent-workbench.md
+
+Audit this repository for agent-workbench compliance.
+Do not modify files.
+```
+
+Repair missing or malformed instruction files:
+
+```text
+Follow the agent-workbench repair prompt at:
+https://raw.githubusercontent.com/KiringYJ/agent-workbench/main/prompts/repair-agent-workbench.md
+
+Repair missing or malformed agent instruction files.
+Preserve project-specific content.
+Do not modify application source code.
+```
+
 ## Canonical guide and thin entrypoints
 
 `AI_AGENT_GUIDE.md` is generated from modules in `guide/` according to `.agent-workbench.yaml` and the selected profile. It carries a metadata marker:
@@ -135,15 +217,10 @@ The update mechanism is prompt-driven. Give an agent the sync prompt and ask it 
 Example invocation:
 
 ```text
-Follow prompts/sync-agent-workbench.md from KiringYJ/agent-workbench.
+Follow the agent-workbench sync prompt at:
+https://raw.githubusercontent.com/KiringYJ/agent-workbench/main/prompts/sync-agent-workbench.md
+
 Sync this project with the rust profile. Do not modify source code.
-```
-
-Or, if this repository is checked out locally:
-
-```text
-Use the agent-workbench sync prompt at ../agent-workbench/prompts/sync-agent-workbench.md.
-Run a full sync with the python profile.
 ```
 
 The prompt instructs the agent to:
