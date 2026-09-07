@@ -8,23 +8,18 @@
 
 ## Local Path Privacy
 
-- Treat every repository and GitHub surface as potentially public, even when its current visibility is private.
-- Never commit or publish a real machine-local absolute path. This includes tracked files, generated artifacts, logs, commit messages, pull requests, issues, review comments, release notes, and attachments.
-- Before committing or publishing, inspect changed content and outbound metadata for Windows drive, UNC, user-profile, and POSIX home paths. Replace them with repository-relative paths or neutral placeholders such as `<repo>`, `<workspace>`, or `<home>`.
-- Keep absolute paths confined to local execution or private diagnostics when they are necessary; do not copy them into repository history or GitHub-visible content.
+- Treat every repository and GitHub surface as potentially public. Keep real machine-local absolute paths confined to local execution or private diagnostics.
+- Before committing or publishing, inspect changed content and outbound metadata for Windows drive, UNC, user-profile, and POSIX home paths; replace them with repository-relative paths or neutral placeholders such as `<repo>`, `<workspace>`, or `<home>`.
 
 ## Action and Scope Boundaries
 
-- For requests to answer, explain, review, diagnose, or plan, inspect the relevant material and report the result. Do not implement changes unless the request also asks for them.
-- Treat requests such as "can you fix" or "help me build" as authorization for the requested in-scope local work and relevant non-destructive validation. Carry that work to completion without asking again.
-- Require authorization for external writes, destructive or irreversible actions, purchases or other material costs, credential-gated actions, or a material expansion of scope. Reuse explicit authorization already given for that action; do not ask for the same permission again.
-- Before requesting a missing approval, finish the authorized preparation and validation so the user can review the concrete proposed result. Keep the gated action pending until authorization is established.
-- Do not invent approval gates, warnings, or compliance workflows for hypothetical risks. Explain a real blocker and continue any independent work within scope.
-- Modify only files relevant to the requested task.
+- Answer, review, diagnosis, and planning requests authorize inspection and reporting; implementation requests authorize the requested local edits and relevant non-destructive validation.
+- Require authorization for external writes, destructive or irreversible actions, material costs, credential-gated actions, or material scope expansion. Reuse authorization already given for the same action.
+- Finish authorized preparation and validation before requesting missing approval, keep the gated action pending, and continue independent in-scope work. Do not invent gates for hypothetical risks.
+- Modify only in-scope files and preserve unrelated or concurrent working-tree changes as user-owned.
 - Do not modify application source code during an agent-workbench sync unless the user separately requests application changes.
 - Do not install dependencies, plugins, marketplaces, extensions, or global/user-scope configuration as part of instruction sync.
 - Prefer project-scoped configuration over user-scoped configuration.
-- Do not rely on machine-local absolute paths in committed files.
 
 ## Generated Instruction Files
 

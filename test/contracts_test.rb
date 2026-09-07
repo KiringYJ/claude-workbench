@@ -95,11 +95,12 @@ class WorkbenchContractsTest < Minitest::Test
     end
   end
 
-  def test_removed_entrypoint_notes_remain_canonical_policy
+  def test_core_execution_and_reporting_contracts_remain_canonical
     guide = (ROOT / "AI_AGENT_GUIDE.md").read
-    assert_includes guide, "For non-trivial work, state or internally maintain a short plan"
-    assert_includes guide, "Changed files grouped by purpose."
-    assert_includes guide, "Verification commands and results."
+    assert_match(/non-trivial work, state or internally maintain a short plan/i, guide)
+    assert_match(/final summaries.*changed files.*verification commands.*preserved manual content.*remaining risks/im, guide)
+    assert_match(/working-tree changes as user-owned/i, guide)
+    assert_match(/never bypass hooks/i, guide)
   end
 
   def test_root_configuration_matches_registered_templates
