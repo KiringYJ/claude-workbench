@@ -126,6 +126,52 @@ class WorkbenchContractsTest < Minitest::Test
     end
   end
 
+  def test_skill_routing_table_covers_the_known_skill_catalog_and_portable_skills
+    routing = (ROOT / "guide/workflows.md").read
+    table = routing.split("## Skill Model and Reasoning Routing", 2).last
+    routes = table.lines.grep(/^\| `[^`]+`/).flat_map do |line|
+      line.split("|").first(2).last.scan(/`([^`]+)`/).flatten
+    end
+
+    expected = %w[
+      imagegen openai-docs plugin-creator skill-creator skill-creator:skill-creator
+      skill-installer plugin-management:plugin-management ai-slop-cleaner
+      oh-my-codex:ai-slop-cleaner analyze oh-my-codex:analyze autopilot
+      oh-my-codex:autopilot claude-code-setup:claude-automation-recommender
+      claude-md-management:claude-md-improver
+      claude-md-management:source-command-revise-claude-md code-review
+      oh-my-codex:code-review computer-use:computer-use deep-interview
+      oh-my-codex:deep-interview deep-research-work:deep-research doctor
+      oh-my-codex:doctor documents:documents pdf:pdf presentations:Presentations
+      spreadsheets:Spreadsheets help oh-my-codex:hud
+      oh-my-codex:cancel ralph-loop:source-command-help
+      ralph-loop:source-command-cancel-ralph hookify:source-command-configure
+      hookify:writing-hookify-rules hookify:source-command-list oh-my-codex:ask
+      oh-my-codex:autoresearch oh-my-codex:autoresearch-goal
+      oh-my-codex:best-practice-research oh-my-codex:configure-notifications
+      oh-my-codex:design oh-my-codex:omx-setup omx-setup
+      oh-my-codex:performance-goal oh-my-codex:pipeline oh-my-codex:ralph ralph
+      oh-my-codex:ultragoal
+      oh-my-codex:ultrawork ultrawork oh-my-codex:ultraqa ultraqa
+      oh-my-codex:plan plan oh-my-codex:ralplan ralplan oh-my-codex:prometheus-strict
+      oh-my-codex:skill oh-my-codex:team team oh-my-codex:visual-ralph oh-my-codex:wiki
+      oh-my-codex:worker security-review sites:sites-building sites:sites-hosting
+      spreadsheets:excel-live-control template-creator:template-creator
+      visualize:visualize web-clone commit-workflow guardrail-authoring linus-review
+      loop-until-done read-chatgpt-conversation skill-authoring sync-agent-workbench
+    ]
+
+    assert_equal [], expected - routes, "known skills missing from routing table"
+    assert_equal routes.uniq, routes, "each skill must resolve to exactly one row"
+    assert_equal [], MANIFEST.fetch("portable_skills").keys - routes
+    table.lines.grep(/^\| `[^`]+`/).each do |line|
+      fields = line.split("|").map(&:strip)
+      assert_match(/\A`gpt-[a-z0-9.-]+`\z/, fields.fetch(2))
+      assert_includes %w[`low` `medium` `high` `xhigh` `max` `ultra`], fields.fetch(3)
+      assert_includes ["Bounded child", "Leader workflow", "Parent-bound tool"], fields.fetch(4)
+    end
+  end
+
   def test_portable_skill_distribution_keeps_one_shared_core_and_a_claude_mirror
     assert_equal %w[
       commit-workflow

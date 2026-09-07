@@ -7,6 +7,10 @@ description: Create or update portable Agent Skills under .agents/skills with co
 
 # Skill Authoring
 
+## Dispatch
+
+Use the exact model, effort, delivery boundary, and escalation rule for `skill-authoring` in `AI_AGENT_GUIDE.md`'s **Skill Model and Reasoning Routing** table.
+
 ## Workflow
 
 1. Read `.agents/prompts/create-agent-skill.md` if present.

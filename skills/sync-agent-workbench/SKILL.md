@@ -7,6 +7,10 @@ description: Synchronize, audit, or repair composable agent-workbench policy in 
 
 # Sync Agent Workbench
 
+## Dispatch
+
+Use the exact model, effort, delivery boundary, and escalation rule for `sync-agent-workbench` in `AI_AGENT_GUIDE.md`'s **Skill Model and Reasoning Routing** table.
+
 ## Workflow
 
 1. Read `AI_AGENT_GUIDE.md` and `AI_AGENT_PROJECT.md` if present.

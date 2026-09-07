@@ -7,6 +7,10 @@ description: Retrieve and use the current accessible branch of a user-supplied C
 
 # Read ChatGPT Conversation
 
+## Dispatch
+
+Use the exact model, effort, delivery boundary, and escalation rule for `read-chatgpt-conversation` in `AI_AGENT_GUIDE.md`'s **Skill Model and Reasoning Routing** table.
+
 Use the live conversation as evidence for the current task. Retrieve it before synthesizing, reviewing, or editing anything that depends on it.
 
 ## Evidence and Authority
