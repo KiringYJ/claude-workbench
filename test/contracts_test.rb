@@ -45,6 +45,15 @@ class WorkbenchContractsTest < Minitest::Test
     "tex" => %w[base prompting git repository-workspace security testing review workflows domains/research languages/tex]
   }.freeze
 
+  WORKLOAD_SELECTION = {
+    "peripheral" => ["gpt-5.6-luna", "max"],
+    "technical" => ["gpt-5.6-sol", "medium"],
+    "mixed" => ["gpt-5.6-sol", "high"],
+    "research-math" => ["gpt-6-astra", "medium"],
+    "critical-proof" => ["gpt-6-astra", "max"]
+  }.freeze
+  ALLOWED_ROUTING_PAIRS = WORKLOAD_SELECTION.values.freeze
+
   def test_every_manifest_path_exists
     registered_paths.each do |path|
       assert_path_exists ROOT / path, "manifest path does not exist: #{path}"
@@ -127,8 +136,7 @@ class WorkbenchContractsTest < Minitest::Test
   end
 
   def test_skill_routing_table_covers_the_known_skill_catalog_and_portable_skills
-    routing = (ROOT / "guide/workflows.md").read
-    table = routing.split("## Skill Model and Reasoning Routing", 2).last
+    table = skill_routing_text
     routes = table.lines.grep(/^\| `[^`]+`/).flat_map do |line|
       line.split("|").first(2).last.scan(/`([^`]+)`/).flatten
     end
@@ -162,6 +170,7 @@ class WorkbenchContractsTest < Minitest::Test
     ]
 
     assert_equal [], expected - routes, "known skills missing from routing table"
+    assert_equal 78, routes.length, "skill routing table must preserve all 78 skills and aliases"
     assert_equal routes.uniq, routes, "each skill must resolve to exactly one row"
     assert_equal [], MANIFEST.fetch("portable_skills").keys - routes
     table.lines.grep(/^\| `[^`]+`/).each do |line|
@@ -170,6 +179,39 @@ class WorkbenchContractsTest < Minitest::Test
       assert_includes %w[`low` `medium` `high` `xhigh` `max` `ultra`], fields.fetch(3)
       assert_includes ["Bounded child", "Leader workflow", "Parent-bound tool"], fields.fetch(4)
     end
+  end
+
+  def test_workload_selection_table_maps_each_work_class_to_an_allowed_pair
+    selection = skill_routing_text.split("### Workload selection", 2).fetch(1)
+                           .split("| Exact skill or explicit alias group", 2).first
+    rows = selection.lines.map(&:strip).grep(/^\| (?:peripheral|technical|mixed|research-math|critical-proof) \|/)
+    mapping = rows.to_h do |line|
+      fields = line.split("|").map(&:strip)
+      [fields.fetch(1), [fields.fetch(2).delete("`"), fields.fetch(3).delete("`")]]
+    end
+
+    assert_includes selection.lines.map(&:strip), "| Work class | Model | Effort | Selection rule |"
+    assert_equal WORKLOAD_SELECTION, mapping
+    assert_equal WORKLOAD_SELECTION.length, rows.length
+  end
+
+  def test_skill_routing_defaults_use_workload_selection_pairs
+    defaults = skill_routing_text.lines.grep(/^\| `[^`]+`/).map do |line|
+      fields = line.split("|").map(&:strip)
+      [fields.fetch(2).delete("`"), fields.fetch(3).delete("`")]
+    end
+
+    assert_operator defaults.length, :>, 0
+    assert_empty defaults.reject { |pair| ALLOWED_ROUTING_PAIRS.include?(pair) }
+  end
+
+  def test_skill_routing_inline_stage_and_fallback_pairs_use_workload_selection_pairs
+    pairs = skill_routing_text.lines.filter_map do |line|
+      line.scan(/`(gpt-[a-z0-9.-]+)`[^`\n]*`(low|medium|high|xhigh|max|ultra)`/)
+    end.flatten(1)
+
+    assert_operator pairs.length, :>, 0
+    assert_empty pairs.reject { |pair| ALLOWED_ROUTING_PAIRS.include?(pair) }
   end
 
   def test_portable_skill_distribution_keeps_one_shared_core_and_a_claude_mirror
@@ -514,6 +556,10 @@ class WorkbenchContractsTest < Minitest::Test
   end
 
   private
+
+  def skill_routing_text
+    (ROOT / "guide/workflows.md").read.split("## Skill Model and Reasoning Routing", 2).fetch(1)
+  end
 
   def install_fixture_workflows(consumer)
     prompt_directory = consumer / ".agents/prompts"
