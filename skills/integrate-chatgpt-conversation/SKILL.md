@@ -11,8 +11,11 @@ description: Retrieve and integrate the current accessible branch of a user-supp
 
 Use the exact model, effort, delivery boundary, and escalation rule for
 `integrate-chatgpt-conversation` in `AI_AGENT_GUIDE.md`'s **Skill Model and
-Reasoning Routing** table. Reclassify downstream stages by their actual
-substance instead of applying the retrieval default to the whole task.
+Reasoning Routing** table. When the request includes downstream synthesis,
+review, or file updates, use the mixed technical/editorial tier as the
+controller default. Use the peripheral tier only when the task is explicitly
+limited to retrieval or literal extraction. Reclassify independent mathematical
+review and critical-proof work separately.
 
 Use the live conversation as evidence for the current task. Retrieve it before
 synthesizing, reviewing, or editing anything that depends on it. When the user
@@ -101,39 +104,50 @@ After establishing a complete transcript:
 - Apply downstream changes only within the user's current scope and the active project's rules. Retrieval alone does not authorize unrelated edits, external writes, broad audits, or additional workflows.
 - Preserve uncertainty and attribution. Distinguish what the transcript states, what independent evidence supports, and what remains unresolved.
 
-### Mathematical downstream changes
+### Fail-Closed Mathematical Integration
 
-Retrieval does not certify the transcript's mathematics. When the requested
-file update would add, remove, strengthen, weaken, or otherwise change a
-substantive mathematical claim, require an independent, read-only focused
-scientific audit before applying it. Use the active project's adversarial
-scientific review contract and cover every affected claim together with the
-dependencies and downstream uses needed to assess it. This gate includes
-decisions about a theorem's truth, sufficient hypotheses, well-defined maps or
-constructions, proof gaps, quantifier order, normalization, signs, and limiting
-arguments.
+The mixed-tier controller must not certify the conversation's mathematics or
+clear a proposed change because the transcript is confident, detailed, or
+internally coherent. Automatically treat a candidate file update as
+mathematical when it could add, remove, strengthen, weaken, restate, or reorder:
 
-The agent that writes the revision must not certify its own mathematical work.
-After an accepted repair or substantive revision is applied, independently
-recheck the changed claims and their affected dependencies and uses. If the
-required independent reviewer or evidence is unavailable, keep the mathematical
-edit pending and report the exact blocker; do not silently present an unresolved
-proposal as a proved result.
+- a theorem, lemma, proposition, corollary, definition, conjecture, or claimed
+  consequence;
+- a proof step, formula derivation, hypothesis, quantifier, domain, map, sign,
+  constant, normalization, limit, convergence claim, boundary case, or
+  well-definedness assertion; or
+- a citation, source statement, computation, or example used to justify one of
+  those items.
 
-Purely editorial or mechanical changes that preserve established mathematical
-meaning do not require this scientific audit. A focused audit does not become a
-whole-manuscript journal referee merely because a conversation was read. Use a
-complete journal-referee workflow only when the user requests manuscript-wide
-or submission review, or when another active workflow requires it.
+If classification is uncertain, trigger the audit. Classify an edit as purely
+editorial or mechanical only when the controller can identify why every printed
+claim, hypothesis, dependency, proof role, and source attribution remains
+unchanged.
 
-Route the focused reviewer by the mathematical risk of the affected unit. An
-ordinary question about theorem truth, hypotheses, well-definedness, signs,
-normalizations, or a local proof gap belongs to the normal research-mathematics
-review tier. Reserve the critical-proof tier for a main theorem, a possible
-fatal gap, a long dependent lemma chain, new proof search, an unresolved
-adversarial challenge, or another unusually high-cost failure. Do not run the
-transcript retrieval, routine integration, or the entire manuscript at the
-critical-proof tier solely because the conversation contains mathematics.
+Before any mathematical edit, assemble a bounded review packet containing the
+exact transcript proposal, the current project statement or proof, the proposed
+change, every affected claim, and the dependencies and downstream uses needed
+to assess it. Give that packet and its original source evidence to a fresh,
+independent, read-only reviewer at the normal research-mathematics tier. Do not
+send the whole transcript or manuscript by default; expand the packet only when
+the reviewer identifies additional context required for a valid judgment.
+
+Apply only a change the reviewer establishes, repairs, or explicitly preserves
+as conditional, heuristic, or open. After an accepted mathematical edit, give
+the final changed text and its affected dependencies and uses to a fresh
+independent reviewer. The writer and mixed-tier controller cannot perform this
+post-edit clearance. If either review or required evidence is unavailable, keep
+the mathematical edit pending and report the exact blocker.
+
+Route an ordinary question about theorem truth, hypotheses, well-definedness,
+signs, normalizations, or a local proof gap to the normal research-mathematics
+tier. Reserve the critical-proof tier for a main theorem, a possible fatal gap,
+a long dependent lemma chain, new proof search, an unresolved adversarial
+challenge, or another unusually high-cost failure. Do not run transcript
+retrieval, routine integration, or the entire manuscript at the critical-proof
+tier solely because the conversation contains mathematics. A focused audit does
+not become a whole-manuscript journal referee unless the user requests
+manuscript-wide or submission review, or another active workflow requires it.
 
 ## Completion Standard
 

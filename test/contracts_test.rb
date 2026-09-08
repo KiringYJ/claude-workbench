@@ -206,6 +206,30 @@ class WorkbenchContractsTest < Minitest::Test
     assert_empty defaults.reject { |pair| ALLOWED_ROUTING_PAIRS.include?(pair) }
   end
 
+  def test_conversation_integration_uses_a_mixed_leader_and_fail_closed_math_gate
+    row = skill_routing_text.lines.find do |line|
+      line.start_with?("| `integrate-chatgpt-conversation` |")
+    end
+    refute_nil row
+    fields = row.split("|").map(&:strip)
+    assert_equal "`gpt-5.6-sol`", fields.fetch(2)
+    assert_equal "`high`", fields.fetch(3)
+    assert_equal "Parent-bound tool", fields.fetch(4)
+
+    skill = (ROOT / "skills/integrate-chatgpt-conversation/SKILL.md").read.gsub(/\s+/, " ")
+    required_contracts = [
+      "mixed technical/editorial tier as the controller default",
+      "explicitly limited to retrieval or literal extraction",
+      "Fail-Closed Mathematical Integration",
+      "must not certify the conversation's mathematics",
+      "If classification is uncertain, trigger the audit",
+      "Before any mathematical edit",
+      "After an accepted mathematical edit",
+      "Do not send the whole transcript or manuscript by default"
+    ]
+    required_contracts.each { |contract| assert_includes skill, contract }
+  end
+
   def test_skill_routing_inline_stage_and_fallback_pairs_use_workload_selection_pairs
     pairs = skill_routing_text.lines.filter_map do |line|
       line.scan(/`(gpt-[a-z0-9.-]+)`[^`\n]*`(low|medium|high|xhigh|max|ultra)`/)
