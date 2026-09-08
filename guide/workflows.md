@@ -29,7 +29,7 @@ Do not generate `.codex/skills/`, `.gemini/skills/`, or `.opencode/skills/` mirr
 | Skill authoring | `.agents/prompts/create-agent-skill.md`, `.agents/skills/skill-authoring/SKILL.md` |
 | Commit workflow | `.agents/prompts/commit-workflow.md`, `.agents/skills/commit-workflow/SKILL.md` |
 | Linus-style review | `.agents/prompts/linus-review.md`, `.agents/skills/linus-review/SKILL.md` |
-| Read a linked ChatGPT conversation | `.agents/skills/read-chatgpt-conversation/SKILL.md` |
+| Integrate a linked ChatGPT conversation | `.agents/skills/integrate-chatgpt-conversation/SKILL.md` |
 
 ## Portability Rules
 
@@ -183,6 +183,6 @@ own work; unrelated parent work may continue independently.
 | `guardrail-authoring` | `gpt-5.6-sol` | `high` | Leader workflow | Established rule edits: `gpt-5.6-luna` / `max`; new enforcement/authority design: `gpt-5.6-sol` / `high`. Research-math proof/status obligations use `gpt-6-astra` / `medium`. |
 | `linus-review` | `gpt-5.6-sol` | `high` | Bounded child | Independent technical correctness/maintainability review: `gpt-5.6-sol` / `high`; mathematical correctness: `gpt-6-astra` / `medium`; adversarial proof audit or main-theorem validation: `gpt-6-astra` / `max`. |
 | `loop-until-done` | `gpt-5.6-sol` | `medium` | Leader workflow | Peripheral work: `gpt-5.6-luna` / `max`; technical implementation: `gpt-5.6-sol` / `medium`; difficult debugging: `gpt-5.6-sol` / `high`. Mathematical substance uses `gpt-6-astra` / `medium`; critical proof or genuine mathematical impasse uses `gpt-6-astra` / `max`. |
-| `read-chatgpt-conversation` | `gpt-5.6-luna` | `max` | Parent-bound tool | Authenticated retrieval and completeness checks. Substantive interpretation follows its own work class; reading a mathematical conversation does not by itself require proving its claims. |
+| `integrate-chatgpt-conversation` | `gpt-5.6-luna` | `max` | Parent-bound tool | Authenticated retrieval and completeness checks use the peripheral default. Reclassify downstream synthesis, file updates, and validation by their actual substance; reading a mathematical conversation does not by itself require proving its claims. |
 | `skill-authoring` | `gpt-5.6-sol` | `medium` | Bounded child | Routine entrypoint edits: `gpt-5.6-luna` / `max`; workflow design: `gpt-5.6-sol` / `medium`; difficult runtime/safety-policy decisions: `gpt-5.6-sol` / `high`. |
 | `sync-agent-workbench` | `gpt-5.6-luna` | `max` | Leader workflow | Routine inventory and prescribed sync: `gpt-5.6-luna` / `max`; nontrivial reconciliation: `gpt-5.6-sol` / `medium`; complex provenance or local-edit conflicts: `gpt-5.6-sol` / `high`. Preserve sync scope and project-owned files. |

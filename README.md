@@ -60,9 +60,9 @@ Install is the first sync: the same workflow creates missing files, writes `.age
 
 ## Common tasks
 
-### Use a linked ChatGPT conversation
+### Integrate a linked ChatGPT conversation
 
-After sync, ask the agent to use `read-chatgpt-conversation` with your conversation mention or exact ChatGPT URL and the result you want. The skill retrieves the current accessible conversation, checks pagination and truncation, and reports any access or attachment gaps. It works across project types; downstream edits and validation follow your request and project rules. Retrieval needs a compatible native conversation reader or an authenticated browser available in the active environment.
+After sync, ask the agent to use `integrate-chatgpt-conversation` with your conversation mention or exact ChatGPT URL and the result you want. The skill retrieves the current accessible conversation, checks pagination and truncation, reconciles it with the live project, and completes authorized downstream synthesis, review, file updates, and validation. Retrieval needs a compatible native conversation reader or an authenticated browser available in the active environment; downstream stages are routed by their actual substance.
 
 ### Update an already-synced project
 

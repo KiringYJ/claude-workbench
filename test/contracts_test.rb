@@ -167,7 +167,7 @@ class WorkbenchContractsTest < Minitest::Test
       oh-my-codex:worker security-review sites:sites-building sites:sites-hosting
       spreadsheets:excel-live-control template-creator:template-creator
       visualize:visualize web-clone commit-workflow guardrail-authoring linus-review
-      loop-until-done read-chatgpt-conversation skill-authoring sync-agent-workbench
+      integrate-chatgpt-conversation loop-until-done skill-authoring sync-agent-workbench
     ]
 
     assert_equal [], expected - routes, "known skills missing from routing table"
@@ -219,9 +219,9 @@ class WorkbenchContractsTest < Minitest::Test
     assert_equal %w[
       commit-workflow
       guardrail-authoring
+      integrate-chatgpt-conversation
       linus-review
       loop-until-done
-      read-chatgpt-conversation
       skill-authoring
       sync-agent-workbench
     ], MANIFEST.fetch("portable_skills").keys.sort
