@@ -367,6 +367,7 @@ Do not generate `.codex/skills/`, `.gemini/skills/`, or `.opencode/skills/` mirr
 | Commit workflow | `.agents/prompts/commit-workflow.md`, `.agents/skills/commit-workflow/SKILL.md` |
 | Linus-style review | `.agents/prompts/linus-review.md`, `.agents/skills/linus-review/SKILL.md` |
 | Integrate a linked ChatGPT conversation | `.agents/skills/integrate-chatgpt-conversation/SKILL.md` |
+| Mathematical PDF reading | `.agents/skills/math-pdf-reader/SKILL.md` |
 
 ## Portability Rules
 
@@ -521,5 +522,6 @@ own work; unrelated parent work may continue independently.
 | `linus-review` | `gpt-5.6-sol` | `high` | Bounded child | Independent technical correctness/maintainability review: `gpt-5.6-sol` / `high`; mathematical correctness: `gpt-6-astra` / `medium`; adversarial proof audit or main-theorem validation: `gpt-6-astra` / `max`. |
 | `loop-until-done` | `gpt-5.6-sol` | `medium` | Leader workflow | Peripheral work: `gpt-5.6-luna` / `max`; technical implementation: `gpt-5.6-sol` / `medium`; difficult debugging: `gpt-5.6-sol` / `high`. Mathematical substance uses `gpt-6-astra` / `medium`; critical proof or genuine mathematical impasse uses `gpt-6-astra` / `max`. |
 | `integrate-chatgpt-conversation` | `gpt-5.6-sol` | `high` | Parent-bound tool | Mixed-tier controller for retrieval followed by synthesis, project updates, and validation. An explicitly retrieval-only task may use `gpt-5.6-luna` / `max`. Mathematical changes fail closed to a bounded independent `gpt-6-astra` / `medium` pre-edit audit and fresh post-edit audit; critical-proof escalation alone uses `gpt-6-astra` / `max`. |
+| `math-pdf-reader` | `gpt-6-astra` | `medium` | Bounded child | Theorem, proof, formula, or notation verification. Literal page navigation, rendering, and metadata extraction: `gpt-5.6-luna` / `max`; non-mathematical artifact handling: `gpt-5.6-sol` / `medium`; main-theorem or adversarial proof audit: `gpt-6-astra` / `max`. Preserve the PDF evidence boundary and fail closed on unreadable content. |
 | `skill-authoring` | `gpt-5.6-sol` | `medium` | Bounded child | Routine entrypoint edits: `gpt-5.6-luna` / `max`; workflow design: `gpt-5.6-sol` / `medium`; difficult runtime/safety-policy decisions: `gpt-5.6-sol` / `high`. |
 | `sync-agent-workbench` | `gpt-5.6-luna` | `max` | Leader workflow | Routine inventory and prescribed sync: `gpt-5.6-luna` / `max`; nontrivial reconciliation: `gpt-5.6-sol` / `medium`; complex provenance or local-edit conflicts: `gpt-5.6-sol` / `high`. Preserve sync scope and project-owned files. |

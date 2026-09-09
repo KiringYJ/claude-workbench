@@ -113,3 +113,5 @@ portable_skills:
     path: skills/linus-review/SKILL.md
   integrate-chatgpt-conversation:
     path: skills/integrate-chatgpt-conversation/SKILL.md
+  math-pdf-reader:
+    path: skills/math-pdf-reader/SKILL.md

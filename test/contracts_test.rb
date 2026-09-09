@@ -167,11 +167,12 @@ class WorkbenchContractsTest < Minitest::Test
       oh-my-codex:worker security-review sites:sites-building sites:sites-hosting
       spreadsheets:excel-live-control template-creator:template-creator
       visualize:visualize web-clone commit-workflow guardrail-authoring linus-review
-      integrate-chatgpt-conversation loop-until-done skill-authoring sync-agent-workbench
+      integrate-chatgpt-conversation loop-until-done math-pdf-reader skill-authoring
+      sync-agent-workbench
     ]
 
     assert_equal [], expected - routes, "known skills missing from routing table"
-    assert_equal 78, routes.length, "skill routing table must preserve all 78 skills and aliases"
+    assert_equal 79, routes.length, "skill routing table must preserve all 79 skills and aliases"
     assert_equal routes.uniq, routes, "each skill must resolve to exactly one row"
     assert_equal [], MANIFEST.fetch("portable_skills").keys - routes
     table.lines.grep(/^\| `[^`]+`/).each do |line|
@@ -246,6 +247,7 @@ class WorkbenchContractsTest < Minitest::Test
       integrate-chatgpt-conversation
       linus-review
       loop-until-done
+      math-pdf-reader
       skill-authoring
       sync-agent-workbench
     ], MANIFEST.fetch("portable_skills").keys.sort
